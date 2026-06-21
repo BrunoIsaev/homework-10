@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "homework-10"
+version = "0.1.0"
+description = "Homework project for processing banking data"
+authors = ["Brunolsaev <brunoisaev93@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+pytest-cov = "^4.0"
+flake8 = "^7.0"
+mypy = "^2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
