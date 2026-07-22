@@ -43,3 +43,20 @@ another_function(10, 0)
 ```bash
 PYTHONPATH=. pytest --cov=src.decorators --cov-report=html -v
 ```
+
+
+## Модули utils и external_api (Домашка 13)
+
+Модули для работы с JSON-файлами и конвертации валют через внешнее API.
+
+### Функция load_json (src/utils.py)
+Загружает данные из JSON-файла. Возвращает список словарей или пустой список при ошибках.
+
+### Функция convert_to_rub (src/external_api.py)
+Конвертирует сумму транзакции в рубли. Для USD/EUR обращается к Exchange Rates Data API.
+Ключ API хранится в переменной окружения EXCHANGE_RATE_API_KEY (.env).
+
+### Тестирование
+- Написаны тесты с использованием mock и patch.
+- Покрытие кода проверено через pytest-cov.
+- Проверено через flake8 (0 ошибок) и isort.
