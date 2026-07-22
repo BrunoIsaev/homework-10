@@ -1,0 +1,32 @@
+[
+  {
+    "id": 44194226,
+    "state": "EXECUTED",
+    "date": "2019-08-26T10:50:58.319000",
+    "operationAmount": {
+      "amount": "374.80",
+      "currency": {"name": "USD", "code": "USD"}
+    },
+    "description": "Перевод организации"
+  },
+  {
+    "id": 44194227,
+    "state": "EXECUTED",
+    "date": "2019-08-26T11:00:00.000000",
+    "operationAmount": {
+      "amount": "120.50",
+      "currency": {"name": "EUR", "code": "EUR"}
+    },
+    "description": "Оплата услуг"
+  },
+  {
+    "id": 44194228,
+    "state": "EXECUTED",
+    "date": "2019-08-26T12:00:00.000000",
+    "operationAmount": {
+      "amount": "5000.00",
+      "currency": {"name": "руб.", "code": "RUB"}
+    },
+    "description": "Пополнение счета"
+  }
+]
