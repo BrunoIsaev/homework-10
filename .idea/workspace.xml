@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9d9f56bd-70ee-4093-a3b6-a0c46ae35966" name="Changes" comment="Add pyproject.toml, test_masks.py, and htmlcov report">
+      <change afterPath="$PROJECT_DIR$/data/transactions.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/transactions_excel.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/file_operations.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_file_operations.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature/homework_10_1" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;BrunoIsaev&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/BrunoIsaev/homework-10.git&quot;,
+    &quot;accountId&quot;: &quot;44477dc8-3b5c-491e-b8c3-7fdf5871fdfa&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="3FDHo56qIxF2XBVI830kTOkIO8d" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "feature/homework__16__regex__main"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-98f27166c754-ba05f1cad1b1-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.21829.153" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9d9f56bd-70ee-4093-a3b6-a0c46ae35966" name="Changes" comment="" />
+      <created>1781602891789</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1781602891789</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Add filter_by_state and sort_by_date functions">
+      <option name="closed" value="true" />
+      <created>1781716005528</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1781716005528</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Add README with project description and usage examples">
+      <option name="closed" value="true" />
+      <created>1781718648898</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1781718648898</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Add __init__.py to src package">
+      <option name="closed" value="true" />
+      <created>1781721446271</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1781721446271</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Fix flake8 and mypy issues">
+      <option name="closed" value="true" />
+      <created>1781895035910</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1781895035910</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Add tests for all modules and update README">
+      <option name="closed" value="true" />
+      <created>1781975088324</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1781975088324</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Add pyproject.toml, test_masks.py, and htmlcov report">
+      <option name="closed" value="true" />
+      <created>1782049008959</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1782049008959</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Add pyproject.toml, test_masks.py, and htmlcov report">
+      <option name="closed" value="true" />
+      <created>1782064811245</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1782064811245</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add filter_by_state and sort_by_date functions" />
+    <MESSAGE value="Add README with project description and usage examples" />
+    <MESSAGE value="Add __init__.py to src package" />
+    <MESSAGE value="Fix flake8 and mypy issues" />
+    <MESSAGE value="Add tests for all modules and update README" />
+    <MESSAGE value="Add pyproject.toml, test_masks.py, and htmlcov report" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add pyproject.toml, test_masks.py, and htmlcov report" />
+  </component>
+</project>
