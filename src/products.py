@@ -1,7 +1,6 @@
-"""Модуль с основными сущностями интернет-магазина."""
+"""Модуль с основными сущностями интернет-магазина (Инкапсуляция)."""
 
-import json
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 
 
 class Product:
@@ -14,24 +13,53 @@ class Product:
         price: float,
         quantity: int
     ) -> None:
-        """Инициализация товара.
-
-        Args:
-            name: Название товара.
-            description: Описание товара.
-            price: Цена товара (может быть дробной).
-            quantity: Количество товара на складе (целое число).
-        """
+        """Инициализация товара."""
         self.name = name
         self.description = description
-        self.price = price
+        self.__price = price  # Приватный атрибут цены
         self.quantity = quantity
+
+    @property
+    def price(self) -> float:
+        """Геттер для приватного атрибута цены."""
+        return self.__price
+
+    @price.setter
+    def price(self, new_price: float) -> None:
+        """Сеттер для приватного атрибута цены с проверкой."""
+        if new_price <= 0:
+            print("Цена не должна быть нулевая или отрицательная")
+        else:
+            self.__price = new_price
+
+    @classmethod
+    def new_product(
+        cls,
+        product_data: Dict[str, Any],
+        existing_products: Optional[List['Product']] = None
+    ) -> 'Product':
+        """Класс-метод для создания товара из словаря."""
+        name = product_data["name"]
+        description = product_data["description"]
+        price = float(product_data["price"])
+        quantity = int(product_data["quantity"])
+
+        # Проверка на дубликаты (доп. задание)
+        if existing_products:
+            for prod in existing_products:
+                if prod.name == name:
+                    prod.quantity += quantity
+                    if price > prod.price:
+                        prod.price = price
+                    print(f"Товар '{name}' уже существует.")
+                    return prod
+
+        return cls(name, description, price, quantity)
 
 
 class Category:
     """Класс, представляющий категорию товаров."""
 
-    # Атрибуты класса для общей статистики
     category_count: int = 0
     product_count: int = 0
 
@@ -41,58 +69,30 @@ class Category:
         description: str,
         products: Optional[List[Product]] = None
     ) -> None:
-        """Инициализация категории.
-
-        Args:
-            name: Название категории.
-            description: Описание категории.
-            products: Список объектов Product в этой категории.
-        """
+        """Инициализация категории."""
         self.name = name
         self.description = description
-        self.products = products if products is not None else []
+        # Приватный список товаров
+        self.__products: List[Product] = (
+            products if products is not None else []
+        )
 
-        # Обновляем атрибуты класса при создании нового объекта
         Category.category_count += 1
-        Category.product_count += len(self.products)
+        Category.product_count += len(self.__products)
 
+    def add_product(self, product: Product) -> None:
+        """Добавляет продукт в приватный список товаров."""
+        self.__products.append(product)
+        Category.product_count += 1
 
-def load_products_from_json(filepath: str) -> List[Category]:
-    """Загружает данные о категориях и товарах из JSON-файла.
-
-    Args:
-        filepath: Путь к JSON-файлу.
-
-    Returns:
-        Список объектов Category с вложенными объектами Product.
-    """
-    try:
-        with open(filepath, "r", encoding="utf-8") as f:
-            data = json.load(f)
-
-        categories = []
-        for cat_data in data:
-            products = [
-                Product(
-                    name=p["name"],
-                    description=p["description"],
-                    price=float(p["price"]),
-                    quantity=int(p["quantity"])
-                )
-                for p in cat_data.get("products", [])
-            ]
-            categories.append(
-                Category(
-                    name=cat_data["name"],
-                    description=cat_data["description"],
-                    products=products
-                )
+    @property
+    def products(self) -> str:
+        """Геттер для приватного списка товаров."""
+        result = ""
+        for prod in self.__products:
+            line = (
+                f"{prod.name}, {prod.price} руб. "
+                f"Остаток: {prod.quantity} шт.\n"
             )
-        return categories
-
-    except FileNotFoundError:
-        print(f"Файл не найден: {filepath}")
-        return []
-    except (json.JSONDecodeError, KeyError) as e:
-        print(f"Ошибка чтения JSON: {e}")
-        return []
+            result += line
+        return result
