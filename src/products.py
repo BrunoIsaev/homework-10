@@ -1,4 +1,4 @@
-"""Модуль с основными сущностями интернет-магазина (Инкапсуляция)."""
+"""Модуль с основными сущностями интернет-магазина (Инкапсуляция + магические методы)."""
 
 from typing import List, Optional, Dict, Any
 
@@ -32,6 +32,16 @@ class Product:
         else:
             self.__price = new_price
 
+    def __str__(self) -> str:
+        """Строковое представление товара."""
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other: 'Product') -> float:
+        """Сложение двух товаров: сумма произведений цены на количество."""
+        if not isinstance(other, Product):
+            raise TypeError("Можно складывать только объекты Product")
+        return self.__price * self.quantity + other.price * other.quantity
+
     @classmethod
     def new_product(
         cls,
@@ -44,7 +54,7 @@ class Product:
         price = float(product_data["price"])
         quantity = int(product_data["quantity"])
 
-        # Проверка на дубликаты (доп. задание)
+        # Проверка на дубликаты (доп. задание из HW18)
         if existing_products:
             for prod in existing_products:
                 if prod.name == name:
@@ -87,12 +97,19 @@ class Category:
 
     @property
     def products(self) -> str:
-        """Геттер для приватного списка товаров."""
+        """Геттер для приватного списка товаров.
+        Оптимизирован: использует __str__ каждого продукта."""
         result = ""
         for prod in self.__products:
-            line = (
-                f"{prod.name}, {prod.price} руб. "
-                f"Остаток: {prod.quantity} шт.\n"
-            )
-            result += line
+            result += str(prod) + "\n"
         return result
+
+    def __str__(self) -> str:
+        """Строковое представление категории.
+        Количество продуктов = сумма quantity всех товаров."""
+        total_quantity = sum(prod.quantity for prod in self.__products)
+        return f"{self.name}, количество продуктов: {total_quantity} шт."
+
+    def __iter__(self):
+        """Возвращает итератор по товарам (доп. задание HW19)."""
+        return iter(self.__products)
