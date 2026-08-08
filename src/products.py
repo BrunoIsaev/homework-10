@@ -1,4 +1,4 @@
-"""Модуль с основными сущностями интернет-магазина (Инкапсуляция + магические методы)."""
+"""Модуль с основными сущностями интернет-магазина (Наследование)."""
 
 from typing import List, Optional, Dict, Any
 
@@ -37,9 +37,12 @@ class Product:
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other: 'Product') -> float:
-        """Сложение двух товаров: сумма произведений цены на количество."""
-        if not isinstance(other, Product):
-            raise TypeError("Можно складывать только объекты Product")
+        """Сложение двух товаров: сумма произведений цены на количество.
+        Можно складывать только объекты одинакового класса."""
+        if type(self) != type(other):
+            raise TypeError(
+                f"Нельзя сложить {type(self).__name__} и {type(other).__name__}"
+            )
         return self.__price * self.quantity + other.price * other.quantity
 
     @classmethod
@@ -54,7 +57,7 @@ class Product:
         price = float(product_data["price"])
         quantity = int(product_data["quantity"])
 
-        # Проверка на дубликаты (доп. задание из HW18)
+        # Проверка на дубликаты
         if existing_products:
             for prod in existing_products:
                 if prod.name == name:
@@ -65,6 +68,48 @@ class Product:
                     return prod
 
         return cls(name, description, price, quantity)
+
+
+class Smartphone(Product):
+    """Класс-наследник Product для смартфонов."""
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        efficiency: float,
+        model: str,
+        memory: int,
+        color: str
+    ) -> None:
+        """Инициализация смартфона."""
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    """Класс-наследник Product для газонной травы."""
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        country: str,
+        germination_period: str,
+        color: str
+    ) -> None:
+        """Инициализация газонной травы."""
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
 
 
 class Category:
@@ -91,25 +136,29 @@ class Category:
         Category.product_count += len(self.__products)
 
     def add_product(self, product: Product) -> None:
-        """Добавляет продукт в приватный список товаров."""
+        """Добавляет продукт в приватный список товаров.
+        Проверяет, что продукт является экземпляром Product или его наследника."""
+        if not isinstance(product, Product):
+            raise TypeError(
+                f"Нельзя добавить объект типа {type(product).__name__}. "
+                "Можно добавлять только Product и его наследников."
+            )
         self.__products.append(product)
         Category.product_count += 1
 
     @property
     def products(self) -> str:
-        """Геттер для приватного списка товаров.
-        Оптимизирован: использует __str__ каждого продукта."""
+        """Геттер для приватного списка товаров."""
         result = ""
         for prod in self.__products:
             result += str(prod) + "\n"
         return result
 
     def __str__(self) -> str:
-        """Строковое представление категории.
-        Количество продуктов = сумма quantity всех товаров."""
+        """Строковое представление категории."""
         total_quantity = sum(prod.quantity for prod in self.__products)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
 
     def __iter__(self):
-        """Возвращает итератор по товарам (доп. задание HW19)."""
+        """Возвращает итератор по товарам."""
         return iter(self.__products)
