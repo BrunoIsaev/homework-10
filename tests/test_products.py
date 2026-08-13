@@ -1,7 +1,57 @@
-"""Тесты для модуля products (Наследование)."""
+"""Тесты для модуля products (Абстрактные классы и миксины)."""
 
 import pytest
-from src.products import Product, Smartphone, LawnGrass, Category
+from src.products import Product, Smartphone, LawnGrass, Category, BaseProduct, PrintMixin
+
+
+class TestBaseProduct:
+    """Тесты абстрактного класса BaseProduct."""
+
+    def test_cannot_instantiate_base_product(self):
+        """Проверка, что нельзя создать экземпляр абстрактного класса."""
+        with pytest.raises(TypeError):
+            BaseProduct()
+
+    def test_product_is_instance_of_base_product(self):
+        """Проверка, что Product является наследником BaseProduct."""
+        product = Product("Тест", "Описание", 100.0, 5)
+        assert isinstance(product, BaseProduct)
+
+    def test_smartphone_is_instance_of_base_product(self):
+        """Проверка, что Smartphone является наследником BaseProduct."""
+        phone = Smartphone("iPhone", "Смартфон", 80000, 5, 3.5, "iPhone 15", 256, "Black")
+        assert isinstance(phone, BaseProduct)
+
+    def test_lawn_grass_is_instance_of_base_product(self):
+        """Проверка, что LawnGrass является наследником BaseProduct."""
+        grass = LawnGrass("Трава", "Газонная", 500, 10, "Россия", "14 дней", "Зеленый")
+        assert isinstance(grass, BaseProduct)
+
+
+class TestPrintMixin:
+    """Тесты миксина PrintMixin."""
+
+    def test_mixin_prints_on_creation(self, capsys):
+        """Проверка, что миксин печатает информацию при создании."""
+        product = Product("Тест", "Описание", 100.0, 5)
+        captured = capsys.readouterr()
+        assert "Product(" in captured.out
+        assert "'Тест'" in captured.out
+        assert "'Описание'" in captured.out
+        assert "100.0" in captured.out
+        assert "5" in captured.out
+
+    def test_mixin_prints_smartphone(self, capsys):
+        """Проверка печати для Smartphone."""
+        phone = Smartphone("iPhone", "Смартфон", 80000, 5, 3.5, "iPhone 15", 256, "Black")
+        captured = capsys.readouterr()
+        assert "Smartphone(" in captured.out
+
+    def test_mixin_prints_lawn_grass(self, capsys):
+        """Проверка печати для LawnGrass."""
+        grass = LawnGrass("Трава", "Газонная", 500, 10, "Россия", "14 дней", "Зеленый")
+        captured = capsys.readouterr()
+        assert "LawnGrass(" in captured.out
 
 
 class TestProductEncapsulation:
@@ -63,7 +113,6 @@ class TestProductAdd:
         assert a + b == 1400.0
 
     def test_add_type_error(self):
-        """Проверка ограничения сложения разных классов."""
         product = Product("Товар", "Описание", 100.0, 10)
         smartphone = Smartphone("iPhone", "Смартфон", 80000, 5, 3.5, "iPhone 15", 256, "Black")
         with pytest.raises(TypeError):
@@ -196,34 +245,29 @@ class TestCategoryAddProductRestriction:
         Category.product_count = 0
 
     def test_add_product_valid(self):
-        """Проверка добавления Product."""
         cat = Category("Тест", "Описание")
         prod = Product("Товар", "Описание", 100, 5)
-        cat.add_product(prod)  # Не должно выбросить исключение
+        cat.add_product(prod)
         assert len(cat._Category__products) == 1
 
     def test_add_smartphone_valid(self):
-        """Проверка добавления Smartphone (наследник Product)."""
         cat = Category("Смартфоны", "Телефоны")
         phone = Smartphone("iPhone", "Описание", 80000, 5, 3.5, "iPhone 15", 256, "Black")
-        cat.add_product(phone)  # Не должно выбросить исключение
+        cat.add_product(phone)
         assert len(cat._Category__products) == 1
 
     def test_add_lawn_grass_valid(self):
-        """Проверка добавления LawnGrass (наследник Product)."""
         cat = Category("Трава", "Газонная")
         grass = LawnGrass("Трава", "Описание", 500, 10, "Россия", "14 дней", "Зеленый")
-        cat.add_product(grass)  # Не должно выбросить исключение
+        cat.add_product(grass)
         assert len(cat._Category__products) == 1
 
     def test_add_invalid_object(self):
-        """Проверка запрета добавления не-Product объектов."""
         cat = Category("Тест", "Описание")
         with pytest.raises(TypeError):
             cat.add_product("Не продукт")
 
     def test_add_invalid_type(self):
-        """Проверка запрета добавления числа."""
         cat = Category("Тест", "Описание")
         with pytest.raises(TypeError):
             cat.add_product(123)

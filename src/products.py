@@ -1,9 +1,36 @@
-"""Модуль с основными сущностями интернет-магазина (Наследование)."""
+"""Модуль с основными сущностями интернет-магазина (Абстрактные классы и миксины)."""
 
+from abc import ABC, abstractmethod
 from typing import List, Optional, Dict, Any
 
 
-class Product:
+class BaseProduct(ABC):
+    """Абстрактный базовый класс для всех продуктов."""
+
+    @abstractmethod
+    def __str__(self) -> str:
+        """Строковое представление продукта."""
+        pass
+
+    @abstractmethod
+    def __add__(self, other: 'BaseProduct') -> float:
+        """Сложение двух продуктов."""
+        pass
+
+
+class PrintMixin:
+    """Миксин для печати информации о создании объекта."""
+
+    def print_creation_info(self, *args, **kwargs):
+        """Печатает информацию о создании объекта."""
+        class_name = self.__class__.__name__
+        args_repr = [repr(arg) for arg in args]
+        kwargs_repr = [f"{k}={repr(v)}" for k, v in kwargs.items()]
+        all_args = args_repr + kwargs_repr
+        print(f"{class_name}({', '.join(all_args)})")
+
+
+class Product(PrintMixin, BaseProduct):
     """Класс, представляющий товар в магазине."""
 
     def __init__(
@@ -14,6 +41,7 @@ class Product:
         quantity: int
     ) -> None:
         """Инициализация товара."""
+        self.print_creation_info(name, description, price, quantity)
         self.name = name
         self.description = description
         self.__price = price  # Приватный атрибут цены
@@ -85,7 +113,9 @@ class Smartphone(Product):
         color: str
     ) -> None:
         """Инициализация смартфона."""
-        super().__init__(name, description, price, quantity)
+        # Вызываем __init__ родителя с базовыми параметрами
+        Product.__init__(self, name, description, price, quantity)
+        # Добавляем свои атрибуты
         self.efficiency = efficiency
         self.model = model
         self.memory = memory
@@ -106,7 +136,9 @@ class LawnGrass(Product):
         color: str
     ) -> None:
         """Инициализация газонной травы."""
-        super().__init__(name, description, price, quantity)
+        # Вызываем __init__ родителя с базовыми параметрами
+        Product.__init__(self, name, description, price, quantity)
+        # Добавляем свои атрибуты
         self.country = country
         self.germination_period = germination_period
         self.color = color
