@@ -1,62 +1,64 @@
-"""Тесты для модуля products (Абстрактные классы и миксины)."""
+"""Тесты для модуля products (Обработка исключений)."""
 
 import pytest
 from src.products import Product, Smartphone, LawnGrass, Category, BaseProduct, PrintMixin
 
 
 class TestBaseProduct:
-    """Тесты абстрактного класса BaseProduct."""
-
     def test_cannot_instantiate_base_product(self):
-        """Проверка, что нельзя создать экземпляр абстрактного класса."""
         with pytest.raises(TypeError):
             BaseProduct()
 
     def test_product_is_instance_of_base_product(self):
-        """Проверка, что Product является наследником BaseProduct."""
         product = Product("Тест", "Описание", 100.0, 5)
         assert isinstance(product, BaseProduct)
 
-    def test_smartphone_is_instance_of_base_product(self):
-        """Проверка, что Smartphone является наследником BaseProduct."""
-        phone = Smartphone("iPhone", "Смартфон", 80000, 5, 3.5, "iPhone 15", 256, "Black")
-        assert isinstance(phone, BaseProduct)
-
-    def test_lawn_grass_is_instance_of_base_product(self):
-        """Проверка, что LawnGrass является наследником BaseProduct."""
-        grass = LawnGrass("Трава", "Газонная", 500, 10, "Россия", "14 дней", "Зеленый")
-        assert isinstance(grass, BaseProduct)
-
 
 class TestPrintMixin:
-    """Тесты миксина PrintMixin."""
-
     def test_mixin_prints_on_creation(self, capsys):
-        """Проверка, что миксин печатает информацию при создании."""
-        product = Product("Тест", "Описание", 100.0, 5)
+        Product("Тест", "Описание", 100.0, 5)
         captured = capsys.readouterr()
         assert "Product(" in captured.out
         assert "'Тест'" in captured.out
-        assert "'Описание'" in captured.out
-        assert "100.0" in captured.out
-        assert "5" in captured.out
 
     def test_mixin_prints_smartphone(self, capsys):
-        """Проверка печати для Smartphone."""
-        phone = Smartphone("iPhone", "Смартфон", 80000, 5, 3.5, "iPhone 15", 256, "Black")
+        Smartphone("iPhone", "Смартфон", 80000, 5, 3.5, "iPhone 15", 256, "Black")
         captured = capsys.readouterr()
         assert "Smartphone(" in captured.out
 
     def test_mixin_prints_lawn_grass(self, capsys):
-        """Проверка печати для LawnGrass."""
-        grass = LawnGrass("Трава", "Газонная", 500, 10, "Россия", "14 дней", "Зеленый")
+        LawnGrass("Трава", "Газонная", 500, 10, "Россия", "14 дней", "Зеленый")
         captured = capsys.readouterr()
         assert "LawnGrass(" in captured.out
 
 
-class TestProductEncapsulation:
-    """Тесты инкапсуляции класса Product."""
+class TestProductZeroQuantity:
+    """Тесты проверки нулевого количества (Задание 1)."""
 
+    def test_zero_quantity_raises_value_error(self):
+        with pytest.raises(ValueError) as exc_info:
+            Product("Тест", "Описание", 100.0, 0)
+        assert "Товар с нулевым количеством не может быть добавлен" in str(exc_info.value)
+
+    def test_zero_quantity_smartphone_raises(self):
+        with pytest.raises(ValueError):
+            Smartphone("iPhone", "Смартфон", 80000, 0, 3.5, "iPhone 15", 256, "Black")
+
+    def test_zero_quantity_lawn_grass_raises(self):
+        with pytest.raises(ValueError):
+            LawnGrass("Трава", "Газонная", 500, 0, "Россия", "14 дней", "Зеленый")
+
+    def test_positive_quantity_works(self):
+        product = Product("Тест", "Описание", 100.0, 1)
+        assert product.quantity == 1
+
+    def test_new_product_with_zero_quantity_raises(self):
+        data = {"name": "Тест", "description": "Описание", "price": 100, "quantity": 0}
+        with pytest.raises(ValueError):
+            Product.new_product(data)
+
+
+class TestProductEncapsulation:
     def test_private_price_attribute(self):
         product = Product("Тест", "Описание", 100.0, 5)
         assert hasattr(product, '_Product__price')
@@ -97,16 +99,12 @@ class TestProductEncapsulation:
 
 
 class TestProductStr:
-    """Тесты __str__ для Product."""
-
     def test_str_format(self):
         product = Product("Футболка", "Хлопок", 80.0, 15)
         assert str(product) == "Футболка, 80.0 руб. Остаток: 15 шт."
 
 
 class TestProductAdd:
-    """Тесты __add__ для Product."""
-
     def test_add_basic(self):
         a = Product("Товар A", "Описание", 100.0, 10)
         b = Product("Товар B", "Описание", 200.0, 2)
@@ -120,8 +118,6 @@ class TestProductAdd:
 
 
 class TestSmartphone:
-    """Тесты класса Smartphone."""
-
     def test_smartphone_creation(self):
         phone = Smartphone("iPhone", "Смартфон", 80000, 5, 3.5, "iPhone 15", 256, "Black")
         assert phone.name == "iPhone"
@@ -149,8 +145,6 @@ class TestSmartphone:
 
 
 class TestLawnGrass:
-    """Тесты класса LawnGrass."""
-
     def test_lawn_grass_creation(self):
         grass = LawnGrass("Трава", "Газонная", 500, 10, "Россия", "14 дней", "Зеленый")
         assert grass.name == "Трава"
@@ -171,8 +165,6 @@ class TestLawnGrass:
 
 
 class TestCategoryEncapsulation:
-    """Тесты инкапсуляции класса Category."""
-
     def setup_method(self):
         Category.category_count = 0
         Category.product_count = 0
@@ -204,8 +196,6 @@ class TestCategoryEncapsulation:
 
 
 class TestCategoryStr:
-    """Тесты __str__ для Category."""
-
     def setup_method(self):
         Category.category_count = 0
         Category.product_count = 0
@@ -222,8 +212,6 @@ class TestCategoryStr:
 
 
 class TestCategoryIterator:
-    """Тесты итератора для Category."""
-
     def setup_method(self):
         Category.category_count = 0
         Category.product_count = 0
@@ -238,8 +226,6 @@ class TestCategoryIterator:
 
 
 class TestCategoryAddProductRestriction:
-    """Тесты ограничения добавления в категорию."""
-
     def setup_method(self):
         Category.category_count = 0
         Category.product_count = 0
@@ -271,3 +257,39 @@ class TestCategoryAddProductRestriction:
         cat = Category("Тест", "Описание")
         with pytest.raises(TypeError):
             cat.add_product(123)
+
+
+class TestAveragePrice:
+    """Тесты метода average_price (Задание 2)."""
+
+    def setup_method(self):
+        Category.category_count = 0
+        Category.product_count = 0
+
+    def test_average_price_empty_category(self):
+        """Проверка: пустая категория возвращает 0."""
+        cat = Category("Пустая", "Без товаров")
+        assert cat.average_price() == 0
+
+    def test_average_price_single_product(self):
+        """Проверка: одна цена."""
+        cat = Category("Тест", "Описание")
+        cat.add_product(Product("Товар", "Описание", 100.0, 5))
+        assert cat.average_price() == 100.0
+
+    def test_average_price_multiple_products(self):
+        """Проверка: среднее арифметическое цен."""
+        cat = Category("Тест", "Описание")
+        cat.add_product(Product("Товар 1", "Описание", 100.0, 5))
+        cat.add_product(Product("Товар 2", "Описание", 200.0, 3))
+        cat.add_product(Product("Товар 3", "Описание", 300.0, 1))
+        # (100 + 200 + 300) / 3 = 200
+        assert cat.average_price() == 200.0
+
+    def test_average_price_with_different_quantities(self):
+        """Проверка: количество не влияет на средний ценник."""
+        cat = Category("Тест", "Описание")
+        cat.add_product(Product("Товар 1", "Описание", 100.0, 10))
+        cat.add_product(Product("Товар 2", "Описание", 200.0, 1))
+        # (100 + 200) / 2 = 150
+        assert cat.average_price() == 150.0

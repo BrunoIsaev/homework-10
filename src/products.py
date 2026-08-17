@@ -1,4 +1,4 @@
-"""Модуль с основными сущностями интернет-магазина (Абстрактные классы и миксины)."""
+"""Модуль с основными сущностями интернет-магазина (Обработка исключений)."""
 
 from abc import ABC, abstractmethod
 from typing import List, Optional, Dict, Any
@@ -41,10 +41,12 @@ class Product(PrintMixin, BaseProduct):
         quantity: int
     ) -> None:
         """Инициализация товара."""
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
         self.print_creation_info(name, description, price, quantity)
         self.name = name
         self.description = description
-        self.__price = price  # Приватный атрибут цены
+        self.__price = price
         self.quantity = quantity
 
     @property
@@ -113,9 +115,7 @@ class Smartphone(Product):
         color: str
     ) -> None:
         """Инициализация смартфона."""
-        # Вызываем __init__ родителя с базовыми параметрами
         Product.__init__(self, name, description, price, quantity)
-        # Добавляем свои атрибуты
         self.efficiency = efficiency
         self.model = model
         self.memory = memory
@@ -136,9 +136,7 @@ class LawnGrass(Product):
         color: str
     ) -> None:
         """Инициализация газонной травы."""
-        # Вызываем __init__ родителя с базовыми параметрами
         Product.__init__(self, name, description, price, quantity)
-        # Добавляем свои атрибуты
         self.country = country
         self.germination_period = germination_period
         self.color = color
@@ -159,7 +157,6 @@ class Category:
         """Инициализация категории."""
         self.name = name
         self.description = description
-        # Приватный список товаров
         self.__products: List[Product] = (
             products if products is not None else []
         )
@@ -168,8 +165,7 @@ class Category:
         Category.product_count += len(self.__products)
 
     def add_product(self, product: Product) -> None:
-        """Добавляет продукт в приватный список товаров.
-        Проверяет, что продукт является экземпляром Product или его наследника."""
+        """Добавляет продукт в приватный список товаров."""
         if not isinstance(product, Product):
             raise TypeError(
                 f"Нельзя добавить объект типа {type(product).__name__}. "
@@ -194,3 +190,12 @@ class Category:
     def __iter__(self):
         """Возвращает итератор по товарам."""
         return iter(self.__products)
+
+    def average_price(self) -> float:
+        """Подсчитывает средний ценник всех товаров в категории.
+        Возвращает 0, если товаров нет."""
+        try:
+            total = sum(prod.price for prod in self.__products)
+            return total / len(self.__products)
+        except ZeroDivisionError:
+            return 0
