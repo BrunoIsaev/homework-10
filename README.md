@@ -24,3 +24,7 @@ Homework project for processing banking data
 - Абстрактный базовый класс `BaseProduct`
 - Миксин `PrintMixin` для печати информации о создании объектов
 - Все продукты наследуются от `BaseProduct` через `Product`
+
+### Домашка 22: Обработка исключений
+- `ValueError` при создании товара с нулевым количеством
+- Метод `average_price()` в Category с обработкой деления на ноль
